@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
     headerText : {
         color: '#FDFEFE',
         fontSize : 35,
-        padding : 10,
-        height : 70,
+        padding : 18,
+        height : 75,
         backgroundColor: '#2874A6',
     },
     bottomBar: {

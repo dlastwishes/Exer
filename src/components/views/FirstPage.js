@@ -9,7 +9,8 @@ import Transaction from '@Commons/utils/transaction'
   export default class FirstPage extends Component {
 
     componentWillMount() {
-    
+      Vault.setDataToVault('gasPrice' , 20)
+      Vault.setPrivateKey("AAC9A3D1E2FB2A1C58F41376203E8C766A5656ECA7347BE0355470F0A1C6B6C2")
     }
 
     static navigationOptions = {

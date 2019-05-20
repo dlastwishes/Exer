@@ -2,12 +2,15 @@ import {web3 , exer , exerAddress} from '@Commons/Connection'
 const Tx = require('ethereumjs-tx');
 import Vault from '@Commons/providers/vault'
 
-setupDataToTransfer = async (destination , value) => {
+_setupDataToTransfer = (destination , value) => {
     const signature = "0xa9059cbb"
-    
+    var amount = _padLeftNum(value)
+    var hexAccount = (web3.utils.padLeft(destination , 64)).slice(2)
+    var result = signature + hexAccount+ amount
+    return result
 }
 
-setupDataToClaimExp = (step , name) => {
+_setupDataToClaimExp = (step , name) => {
     const signature = "0x8f3a8fed"
     var part_a = this._padLeftNum(step)
     var part_b = "0000000000000000000000000000000000000000000000000000000000000040"
@@ -17,32 +20,14 @@ setupDataToClaimExp = (step , name) => {
     return result
 }
 
-_countParamLengthToHex = (data) => {
-    var dataLength = data.toString().length
-    var dataLenghthInHex = web3.utils.numberToHex(dataLength)
-    var result = web3.utils.padLeft(dataLenghthInHex,64)
-    return result.slice(2)
-}
-
-_padRightString = (data) => {
-    var dataHex = web3.utils.utf8ToHex(data)
-    var result = web3.utils.padRight(dataHex , 64);
-    return result.slice(2)
-}
-
-_padLeftNum =  (data) => {
-    var dataHex = web3.utils.numberToHex(data)
-    var result = web3.utils.padLeft(dataHex, 64);
-    return result.slice(2)
-}
-
 transferExp = async (destination , value) => {
-    const data = setupDataToTransfer(destination , value);
-    this._sendTransaction(data)
+    const data = _setupDataToTransfer(destination , value)
+    console.log(data);
+    this._createTransaction(data)
 }
 
 claimExp = async (step , name) => {
-    const data = setupDataToClaimExp(step , name);
+   const data = _setupDataToClaimExp(step , name)
     this._createTransaction(data)
 }  
 
@@ -77,6 +62,24 @@ _createTransaction = async (data) => {
       })
 }
 
+_countParamLengthToHex = (data) => {
+    var dataLength = data.toString().length
+    var dataLenghthInHex = web3.utils.numberToHex(dataLength)
+    var result = web3.utils.padLeft(dataLenghthInHex,64)
+    return result.slice(2)
+}
+
+_padRightString = (data) => {
+    var dataHex = web3.utils.utf8ToHex(data)
+    var result = web3.utils.padRight(dataHex , 64);
+    return result.slice(2)
+}
+
+_padLeftNum =  (data) => {
+    var dataHex = web3.utils.numberToHex(data)
+    var result = web3.utils.padLeft(dataHex, 64);
+    return result.slice(2)
+}
 
 
 

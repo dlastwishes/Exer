@@ -10,10 +10,7 @@ import Vault from '@Commons/providers/vault'
   export default class TransferView extends Component {
 
     componentWillMount() {
-      Vault.setDataToVault('gasPrice' , 20)
-      Vault.setPrivateKey("AAC9A3D1E2FB2A1C58F41376203E8C766A5656ECA7347BE0355470F0A1C6B6C2").then(() => {
-        Transaction.claimExp(5000 , "dlastwishes");
-      })
+     
     }
 
     static navigationOptions = {
@@ -23,12 +20,18 @@ import Vault from '@Commons/providers/vault'
     constructor(props) {
       super(props);
       this.state = {
-        
+   
       };
     }
   
     _onPress  = (destination , amount) => {
-      
+      if(web3.utils.isAddress(destination)){
+        Transaction.transferExp(destination , amount)
+      }
+      else{
+        console.log('Invalid Address')
+      }
+     
     }
 
     render() {
