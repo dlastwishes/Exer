@@ -11,6 +11,8 @@ import Header from '@Widgets/Header'
 
     static navigationOptions = {
       header: null,
+      
+
     };
   
     constructor(props) {

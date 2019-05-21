@@ -1,23 +1,27 @@
 import React, { Component } from "react";
-import { Icon, StyleSheet, Text, View, ScrollView ,FlatList} from "react-native";
+import { Icon, StyleSheet, Text, View, ScrollView ,FlatList,} from "react-native";
 import Web3 from "web3";
 import connection from "@Commons/Connection";
 import Header from "@Widgets/Header";
 import UserInfo from "@Widgets/UserInfo";
 import Balance from "@Widgets/Balance";
 import UserMenuItem from "@Widgets/UserMenuItem" ;
+
 const data = [
   {
       id: 0,
-      text: 'Edit Profile'
+      text: 'Edit Profile' ,
+      screen: 'edit' ,
   },
   {
       id: 1,
-      text: 'Wallet Menu'
+      text: 'Wallet Menu',
+      screen: 'edit' ,
   },
   {
       id: 2,
-      text: 'Security Settings'
+      text: 'Security Settings',
+      screen: 'edit' ,
   },
 
 ]
@@ -31,7 +35,12 @@ export default class ProfileView extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      name : "" ,
+      email : "",
+      tel : "",
+      balance : 100.9 ,
+    };
   }
 
   renderItem = ({ item }) => {
@@ -39,15 +48,17 @@ export default class ProfileView extends Component {
       <UserMenuItem
         iconImage={item.iconImage}
         text={item.text}
-        onPress={() => this._onPress(item.id)}
+        onPress={() => this.props.navigation.navigate(item.screen,{ hideTabBar: true })}
+        
       />
     );
   };
 
   keyExtractor = ({ id }) => id.toString();
 
-  _onPress = id => {
-    console.log(id);
+  _onPress = ({ item }) => {
+    let view = this.state.item.screen 
+    this.props.navigation.navigate(item.screen)
   };
 
   render() {
@@ -56,14 +67,14 @@ export default class ProfileView extends Component {
         <Header title="PROFILE" />
         <ScrollView>
           <UserInfo
-            name={"เอกวัฒน์ ปทุมรังษี"}
-            email={"aekwatt@hotmail.com"}
-            tel={"082-330-3825"}
+            name={this.state.name}
+            email={this.state.email}
+            tel={this.state.tel}
           />
           <View>
             <Text style={styles.spec}> </Text>
           </View>
-          <Balance money={"100.9"} />
+          <Balance money={this.state.balance} />
 
           <View>
             <Text style={styles.spec}> </Text>
