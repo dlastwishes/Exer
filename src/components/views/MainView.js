@@ -18,21 +18,25 @@ import AnimatedCircularProgress from "@Widgets/AnimatedCircularProgress";
 import Modal from "react-native-modal";
 import DailyGoals from "@Widgets/DailyGoals";
 export default class MainView extends Component {
-  state = {
-    isPedometerAvailable: "checking",
-    pastStepCount: 0,
-    currentStepCount: 0,
-    visibleModal: false,
-    visibleModalDG: false,
-    circularFill: 0
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isPedometerAvailable: "checking",
+      pastStepCount: 0,
+      currentStepCount: 0,
+      visibleModal: false,
+      visibleModalDG: false,
+      circularfill: 0
+    };
+  }
 
   renderModalContent = () => (
     <View style={styles.content}>
       <Text style={styles.contentTitle}>กำหนดเป้าหมาย</Text>
       <DailyGoals
-        onPressclose={() => {
-          this._onPressclose();
+        onPressclose={Dgoals => {
+          this._onPressclose(Dgoals);
+          console.log("circularFill :" + this.state.circularfill);
         }}
       />
       <Button
@@ -57,16 +61,16 @@ export default class MainView extends Component {
     this.setState({ visibleModal: false });
     this.setState({ visibleModalDG: "default" });
     // if(this.props.goal[0] === "5000"){
-    console.log(Dgoals)
-    if (Dgoals === 5000) {
-      this.setState({ circularFill: 5000 });
+    console.log(Dgoals);
+    if (Dgoals == 5000) {
+      this.setState({ circularfill: 5000 });
+    } else if (Dgoals == 10000) {
+      this.setState({ circularfill: 10000 });
+    } else if (Dgoals == 15000) {
+      this.setState({ circularfill: 15000 });
     }
-    if (Dgoals === 10000) {
-      this.setState({ circularFill: 10000 });
-    }
-    if (Dgoals === 15000) {
-      this.setState({ circularFill: 15000 });
-    }
+
+    
 
     // }
   };
@@ -108,8 +112,6 @@ export default class MainView extends Component {
 
     // start.setDate(end.getDate() - 0.7);
     start.setHours(0, 0, 0, 0);
-    console.log("start: " + start);
-    console.log("end: " + end);
     Pedometer.getStepCountAsync(start, end).then(
       result => {
         this.setState({ pastStepCount: result.steps });

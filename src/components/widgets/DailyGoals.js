@@ -11,12 +11,13 @@ import {
 import Modal from "react-native-modal";
 
 
-const goals = ["5000", "10000", "15000"];
+const goals = [15000,10000,5000];
 
 class DailyGoals extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      goals : [5000,10000,15000],
       goal: 'Loading...',
       visibleModal: false ,
       visibleModalDG : false,
@@ -44,20 +45,20 @@ class DailyGoals extends Component {
   // );
 
   renderItem = ({ item }) => {
-    let Dgoal = 0
-    console.log("renderItem"+ item)
-    if(item === 5000){
-      this.setState({ Dgoals: 5000  })
-    }
-    if(item === 10000){
-      this.setState({ Dgoals: 10000  })
-    }
-    if(item === 15000){
-      this.setState({ Dgoals: 15000  })
-    }
+
+    console.log("renderItem "+ item)
+    // if(item == 15000){
+    //   this.setState({ Dgoals: 15000  })
+    // }else if(item == 10000){
+    //   this.setState({ Dgoals: 10000  })
+    // }else if(item == 5000){
+    //   this.setState({ Dgoals: 5000  })
+    // }
     return (
       <TouchableOpacity
-      onPress={ ()=>this.props.onPressclose(this.state.Dgoals)}
+      onPress={ ()=>{
+        this.props.onPressclose(item)}
+      }
       >
         <Text style={styles.contentTitle}>{item} ก้าว</Text>
       </TouchableOpacity>
@@ -67,7 +68,7 @@ class DailyGoals extends Component {
   render() {
     return (
       <View style={{ width: 100, height: 100 }}>
-        <FlatList data={goals} renderItem={this.renderItem} />
+        <FlatList data={this.state.goals} renderItem={this.renderItem} />
         {/* <Modal isVisible={this.state.visibleModalDG === "default"}>
             {this.renderModalContentSuccess()}
           </Modal> */}
