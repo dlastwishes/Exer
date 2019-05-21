@@ -31,7 +31,6 @@ import Vault from '@Commons/providers/vault'
       else{
         console.log('Invalid Address')
       }
-     
     }
 
     render() {

@@ -31,7 +31,8 @@
     "url": "^0.10.3",
     "util": "^0.10.4",
     "web3": "^1.0.0-beta.55",
-    "react-navigation": "3.11.0"
+    "react-navigation": "3.11.0",
+    "react-native-modal": "11.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
