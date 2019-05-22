@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet } from 'react-native';
-
+import { LinearGradient } from 'expo';
 const styles = StyleSheet.create({
     container: {
         flexDirection : 'column'
@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
         fontSize : 35,
         padding : 10,
         height : 70,
-        backgroundColor: '#2874A6',
     },
     bottomBar: {
       position: 'absolute',

@@ -8,7 +8,8 @@ import {
   Image,
   Button,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 import Web3 from "web3";
 import connection from "@Commons/Connection";
@@ -17,6 +18,8 @@ import { Pedometer } from "expo";
 import AnimatedCircularProgress from "@Widgets/AnimatedCircularProgress";
 import Modal from "react-native-modal";
 import DailyGoals from "@Widgets/DailyGoals";
+import { LinearGradient } from "expo";
+import PromotionsList from "@Widgets/PromotionsList";
 export default class MainView extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +29,8 @@ export default class MainView extends Component {
       currentStepCount: 0,
       visibleModal: false,
       visibleModalDG: false,
-      circularfill: 0
+      circularfill: 0,
+      datafill: 0
     };
   }
 
@@ -70,9 +74,22 @@ export default class MainView extends Component {
       this.setState({ circularfill: 15000 });
     }
 
-    
+    this._circularFill();
+  };
 
-    // }
+  _circularFill = () => {
+    let stepfill = 0;
+    if (this.state.circularfill == 5000) {
+      stepfill = (this.state.pastStepCount / 5000) * 100;
+      this.setState({ datafill: stepfill });
+    } else if (this.state.circularfill == 10000) {
+      stepfill = (this.state.pastStepCount / 10000) * 100;
+      this.setState({ datafill: stepfill });
+    } else if (this.state.circularfill == 15000) {
+      stepfill = (this.state.pastStepCount / 15000) * 100;
+      this.setState({ datafill: stepfill });
+    }
+    console.log(this.state.datafill);
   };
 
   static navigationOptions = {
@@ -81,6 +98,7 @@ export default class MainView extends Component {
 
   componentDidMount() {
     this._subscribe();
+    this._circularFill();
   }
 
   componentWillUnmount() {
@@ -134,36 +152,55 @@ export default class MainView extends Component {
   render() {
     return (
       <View>
-        <Header title="EXER" />
+        <LinearGradient colors={["#c264fe", "#a82ffc", "#7a08fa"]}>
+          <Header title="EXER" />
+        </LinearGradient>
 
         {/* <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text> */}
-        <AnimatedCircularProgress
-          size={360}
-          width={15}
-          fill={48.8}
-          tintColor="#00e0ff"
-          onAnimationComplete={() => console.log("onAnimationComplete")}
-          backgroundColor="#3d5875"
-        >
-          {fill => (
-            <View>
-              <Text style={styles.steps}>{this.state.pastStepCount} Steps</Text>
-              <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                <Text>Goal: {this.state.pastStepCount}</Text>
-                <TouchableHighlight
-                  onPress={() => this.setState({ visibleModal: "default" })}
-                >
-                  <Image
-                    style={{ width: 25, height: 25, marginLeft: 5 }}
-                    source={require("@Commons/images/editgoal.png")}
-                  />
-                </TouchableHighlight>
-              </View>
+        <ScrollView>
+        <View style={styles.container}>
+          <AnimatedCircularProgress
+            size={300}
+            width={18}
+            fill={this.state.datafill}
+            tintColor="#a82ffc"
+            onAnimationComplete={() => console.log("onAnimationComplete")}
+            backgroundColor="#313848"
+          >
+            {fill => (
+              <View style={styles.dayFill}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={require("@Commons/images/running.png")}
+                />
+                <Text style={styles.steps}>
+                  {this.state.pastStepCount} Steps
+                </Text>
+                <View style={{ flexDirection: "row", marginBottom: 10 }}>
+                  <Text style={{ color: "#313848", fontWeight: "bold" }}>
+                    Goal {this.state.circularfill}
+                  </Text>
+                  <TouchableHighlight
+                    onPress={() => this.setState({ visibleModal: "default" })}
+                  >
+                    <Image
+                      style={{ width: 25, height: 25, marginLeft: 5 }}
+                      source={require("@Commons/images/edit.png")}
+                    />
+                  </TouchableHighlight>
+                </View>
 
-              <View />
-            </View>
-          )}
-        </AnimatedCircularProgress>
+                <View />
+              </View>
+            )}
+          </AnimatedCircularProgress>
+          
+        </View>
+        <View>
+            <ScrollView horizontal={true}>
+              <PromotionsList />
+            </ScrollView>
+          </View></ScrollView>
         <View>
           <Modal isVisible={this.state.visibleModal === "default"}>
             {this.renderModalContent()}
@@ -179,16 +216,17 @@ export default class MainView extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingTop: 10
   },
   steps: {
     backgroundColor: "transparent",
     fontSize: 30,
     textAlign: "center",
-    marginBottom: 10
+    marginBottom: 10,
+    fontWeight: "bold",
+    color: "#313848"
   },
   content: {
     backgroundColor: "white",
@@ -201,6 +239,16 @@ const styles = StyleSheet.create({
   contentTitle: {
     fontSize: 20,
     marginBottom: 12
+  },
+  dayFill: {
+    backgroundColor: "transparent",
+    position: "absolute",
+    top: 10,
+    left: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 250,
+    height: 250
   }
 });
 

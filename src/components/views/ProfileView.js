@@ -1,30 +1,36 @@
 import React, { Component } from "react";
-import { Icon, StyleSheet, Text, View, ScrollView ,FlatList,} from "react-native";
+import {
+  Icon,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList
+} from "react-native";
 import Web3 from "web3";
 import connection from "@Commons/Connection";
 import Header from "@Widgets/Header";
 import UserInfo from "@Widgets/UserInfo";
 import Balance from "@Widgets/Balance";
-import UserMenuItem from "@Widgets/UserMenuItem" ;
-
+import UserMenuItem from "@Widgets/UserMenuItem";
+import { LinearGradient } from "expo";
 const data = [
   {
-      id: 0,
-      text: 'Edit Profile' ,
-      screen: 'edit' ,
+    id: 0,
+    text: "Edit Profile",
+    screen: "editprofile"
   },
   {
-      id: 1,
-      text: 'Wallet Menu',
-      screen: 'edit' ,
+    id: 1,
+    text: "Wallet Menu",
+    screen: "walletmenu"
   },
   {
-      id: 2,
-      text: 'Security Settings',
-      screen: 'edit' ,
-  },
-
-]
+    id: 2,
+    text: "Security Settings",
+    screen: "securitysettings"
+  }
+];
 
 export default class ProfileView extends Component {
   componentDidMount() {}
@@ -36,10 +42,10 @@ export default class ProfileView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name : "" ,
-      email : "",
-      tel : "",
-      balance : 100.9 ,
+      name: "Loading...",
+      email: "Loading...",
+      tel: "Loading...",
+      balance: 100.9
     };
   }
 
@@ -48,8 +54,9 @@ export default class ProfileView extends Component {
       <UserMenuItem
         iconImage={item.iconImage}
         text={item.text}
-        onPress={() => this.props.navigation.navigate(item.screen,{ hideTabBar: true })}
-        
+        onPress={() =>
+          this.props.navigation.navigate(item.screen, { hideTabBar: true })
+        }
       />
     );
   };
@@ -57,14 +64,16 @@ export default class ProfileView extends Component {
   keyExtractor = ({ id }) => id.toString();
 
   _onPress = ({ item }) => {
-    let view = this.state.item.screen 
-    this.props.navigation.navigate(item.screen)
+    let view = this.state.item.screen;
+    this.props.navigation.navigate(item.screen);
   };
 
   render() {
     return (
       <View>
-        <Header title="PROFILE" />
+        <LinearGradient colors={["#c264fe", "#a82ffc", "#7a08fa"]}>
+          <Header title="PROFILE" />
+        </LinearGradient>
         <ScrollView>
           <UserInfo
             name={this.state.name}

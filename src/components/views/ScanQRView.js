@@ -14,7 +14,7 @@ import {
 import { BarCodeScanner, Permissions } from "expo";
 import styles from "@Commons/styles";
 import Header from "@Widgets/Header";
-
+import { LinearGradient } from 'expo';
 export default class QRView extends Component {
   static navigationOptions = {
     header: null
@@ -49,7 +49,10 @@ export default class QRView extends Component {
     return (
       <View style={styles.container}>
       <View>
-      <Header title="Scan QR Code " />
+      <LinearGradient
+          colors={['#c264fe', '#a82ffc', '#7a08fa']}
+          >
+      <Header title="Scan QR Code " /></LinearGradient>
       </View>
       <View style={{marginTop:55}}> 
       <BarCodeScanner

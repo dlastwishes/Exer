@@ -31,29 +31,7 @@ class DailyGoals extends Component {
     
   }
 
-
-
-
-  // renderModalContent = () => (
-  //   <View style={styles.content}>
-  //     <Text style={styles.contentTitle}>สำเร็จ</Text>
-  //     <Button
-  //       onPress={() => this._onPress()}
-  //       title="Close"
-  //     />
-  //   </View>
-  // );
-
   renderItem = ({ item }) => {
-
-    console.log("renderItem "+ item)
-    // if(item == 15000){
-    //   this.setState({ Dgoals: 15000  })
-    // }else if(item == 10000){
-    //   this.setState({ Dgoals: 10000  })
-    // }else if(item == 5000){
-    //   this.setState({ Dgoals: 5000  })
-    // }
     return (
       <TouchableOpacity
       onPress={ ()=>{
@@ -69,9 +47,6 @@ class DailyGoals extends Component {
     return (
       <View style={{ width: 100, height: 100 }}>
         <FlatList data={this.state.goals} renderItem={this.renderItem} />
-        {/* <Modal isVisible={this.state.visibleModalDG === "default"}>
-            {this.renderModalContentSuccess()}
-          </Modal> */}
       </View>
       
     );
