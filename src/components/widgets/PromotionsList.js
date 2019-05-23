@@ -17,11 +17,11 @@ import { View, Text, StyleSheet, Image ,FlatList ,ScrollView,TouchableOpacity,na
             },
             {
               Promotion: 2,
-              images: require("@Commons/images/promotion1.png")
+              images: require("@Commons/images/promotion2.png")
             },
             {
               Promotion: 3,
-              images: require("@Commons/images/promotion1.png")
+              images: require("@Commons/images/promotion3.png")
             }
           ]
         
@@ -82,7 +82,9 @@ const styles = StyleSheet.create({
   picture: {
     height: 150,
     width: 265,
-    resizeMode: "stretch"
+    resizeMode: "stretch",
+    borderRadius: 3,
+    margin: 2,
   }
 });
 
