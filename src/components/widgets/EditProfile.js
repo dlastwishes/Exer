@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from "react";
-import { View, Text, StyleSheet,TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import t from "tcomb-form-native";
 
 const Form = t.form.Form;
@@ -11,10 +11,23 @@ const edit = t.struct({
   PrivateKey: t.String
 });
 
+const multilineStyle = {
+    ...Form.stylesheet,
+    textbox: {
+      ...Form.stylesheet.textbox,
+      normal: {
+        ...Form.stylesheet.textbox.normal,
+        height: 100
+      }
+    }
+  };
+
 const options = {
   fields: {
     PrivateKey: {
-      editable: false
+      editable: false,
+      stylesheet: multilineStyle,
+      multiline: true,
     }
   }
 };
@@ -38,13 +51,8 @@ class EditProfile extends Component {
       <View style={styles.content}>
         <Form ref="edit" type={edit} options={options} />
         <TouchableOpacity onPress={this.props.onPressCloseEditProfile}>
-          <View style={{ backgroundColor: "white", width: 250, height: 50 }}>
-            <Text
-              style={{ color: "#a82ffc", fontSize: 25, textAlign: "center" }}
-            >
-              {" "}
-              Close{" "}
-            </Text>
+          <View style={styles.button}>
+            <Text style={{ color: "#FFFF" }}> SAVE </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -64,9 +72,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "white",
     padding: 15,
-    alignItems: "center",
     borderRadius: 4,
     borderColor: "rgba(0, 0, 0, 0.1)"
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#930077",
+    padding: 10,
+    margin: 10,
+    borderRadius: 5
   }
 });
 
