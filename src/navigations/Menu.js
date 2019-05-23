@@ -15,13 +15,18 @@ import HomeView from "@Views/MainView";
 import EditProfile from "@Views/EditProfile";
 import WalletMenu from '@Views/WalletMenu'
 import SecuritySettings from '@Views/SecuritySettings'
+import Promotions from '@Views/Promotions'
 // create a component
 
 const MainViewNav = createStackNavigator({
   main: {
     screen: HomeView
+  },
+  promotion: {
+    screen: Promotions
   }
 });
+
 
 const TransferNav = createStackNavigator({
   tran: {

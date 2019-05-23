@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image ,FlatList ,ScrollView} from "react-native";
+import { View, Text, StyleSheet, Image ,FlatList ,ScrollView,TouchableOpacity,navigation} from "react-native";
 
 // create a component
 
@@ -28,10 +28,17 @@ import { View, Text, StyleSheet, Image ,FlatList ,ScrollView} from "react-native
     };
   }
 
+  _onPress = ()=>{
+
+    this.props.navigation.navigate("promotion");
+    console.log("test123")
+  }
 
   _renderItem = ({ item }) => {
     return (
+      <TouchableOpacity onPress={() => this.props.navigation.navigate("promotion")}>
         <Image style={styles.picture} source={item.images} />
+        </TouchableOpacity>
     );
   };
   
@@ -39,8 +46,10 @@ import { View, Text, StyleSheet, Image ,FlatList ,ScrollView} from "react-native
 
   render() {
     return (
-      <View >
+      <View style={{paddingTop:10}}>
+      <Text style={styles.label}>Promotions</Text>
       <ScrollView>
+
         <FlatList
           horizontal={true}
           data={this.state.flatListData}
@@ -67,7 +76,6 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   label: {
-    textAlign: "center",
     fontSize: 11,
     padding: 5
   },

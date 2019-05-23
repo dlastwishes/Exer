@@ -20,6 +20,7 @@ import Modal from "react-native-modal";
 import DailyGoals from "@Widgets/DailyGoals";
 import { LinearGradient } from "expo";
 import PromotionsList from "@Widgets/PromotionsList";
+import MianMenu from "@Widgets/MainMenu";
 export default class MainView extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +37,7 @@ export default class MainView extends Component {
 
   renderModalContent = () => (
     <View style={styles.content}>
-      <Text style={styles.contentTitle}>กำหนดเป้าหมาย</Text>
+      <Text style={styles.contentTitle}>Goal</Text>
       <DailyGoals
         onPressclose={Dgoals => {
           this._onPressclose(Dgoals);
@@ -52,7 +53,7 @@ export default class MainView extends Component {
 
   renderModalContentSuccess = () => (
     <View style={styles.content}>
-      <Text style={styles.contentTitle}>สำเร็จ</Text>
+      <Text style={styles.contentTitle}>Success</Text>
       <Button onPress={() => this._onPress()} title="Close" />
     </View>
   );
@@ -152,55 +153,61 @@ export default class MainView extends Component {
   render() {
     return (
       <View>
-        <LinearGradient colors={["#c264fe", "#a82ffc", "#7a08fa"]}>
+        <LinearGradient colors={["#0c056d", "#590d82"]}> 
           <Header title="EXER" />
         </LinearGradient>
 
         {/* <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text> */}
         <ScrollView>
-        <View style={styles.container}>
-          <AnimatedCircularProgress
-            size={300}
-            width={18}
-            fill={this.state.datafill}
-            tintColor="#a82ffc"
-            onAnimationComplete={() => console.log("onAnimationComplete")}
-            backgroundColor="#313848"
-          >
-            {fill => (
-              <View style={styles.dayFill}>
-                <Image
-                  style={{ width: 50, height: 50 }}
-                  source={require("@Commons/images/running.png")}
-                />
-                <Text style={styles.steps}>
-                  {this.state.pastStepCount} Steps
-                </Text>
-                <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                  <Text style={{ color: "#313848", fontWeight: "bold" }}>
-                    Goal {this.state.circularfill}
+          <View style={styles.container}>
+            <AnimatedCircularProgress
+              size={300}
+              width={18}
+              fill={this.state.datafill}
+              tintColor="#a82ffc"
+              onAnimationComplete={() => console.log("onAnimationComplete")}
+              backgroundColor="#313848"
+            >
+              {fill => (
+                <View style={styles.dayFill}>
+                  <Image
+                    style={{ width: 50, height: 50 }}
+                    source={require("@Commons/images/running.png")}
+                  />
+                  <Text style={styles.steps}>
+                    {this.state.pastStepCount} Steps
                   </Text>
-                  <TouchableHighlight
-                    onPress={() => this.setState({ visibleModal: "default" })}
-                  >
-                    <Image
-                      style={{ width: 25, height: 25, marginLeft: 5 }}
-                      source={require("@Commons/images/edit.png")}
-                    />
-                  </TouchableHighlight>
+                  <View style={{ flexDirection: "row", marginBottom: 10 }}>
+                    <Text style={{ color: "#313848", fontWeight: "bold" }}>
+                      Goal {this.state.circularfill}
+                    </Text>
+                    <TouchableHighlight
+                      onPress={() => this.setState({ visibleModal: "default" })}
+                    >
+                      <Image
+                        style={{ width: 25, height: 25, marginLeft: 5 }}
+                        source={require("@Commons/images/edit.png")}
+                      />
+                    </TouchableHighlight>
+                  </View>
+                  <View />
                 </View>
+              )}
+            </AnimatedCircularProgress>
+          </View>
+          <View>
+            <MianMenu/>
+          </View>
+          <PromotionsList />
+          <View>
+          <Text>                              </Text>
+          <Text>                              </Text>
+          <Text>                              </Text>
+          <Text>                              </Text>
+          </View>
 
-                <View />
-              </View>
-            )}
-          </AnimatedCircularProgress>
           
-        </View>
-        <View>
-            <ScrollView horizontal={true}>
-              <PromotionsList />
-            </ScrollView>
-          </View></ScrollView>
+        </ScrollView>
         <View>
           <Modal isVisible={this.state.visibleModal === "default"}>
             {this.renderModalContent()}
@@ -230,15 +237,13 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: "white",
-    padding: 22,
-    justifyContent: "center",
+    padding: 15,
     alignItems: "center",
     borderRadius: 4,
     borderColor: "rgba(0, 0, 0, 0.1)"
   },
   contentTitle: {
     fontSize: 20,
-    marginBottom: 12
   },
   dayFill: {
     backgroundColor: "transparent",

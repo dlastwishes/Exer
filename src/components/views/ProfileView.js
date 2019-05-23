@@ -55,7 +55,7 @@ export default class ProfileView extends Component {
         iconImage={item.iconImage}
         text={item.text}
         onPress={() =>
-          this.props.navigation.navigate(item.screen, { hideTabBar: true })
+          this.props.navigation.navigate("promotion")
         }
       />
     );

@@ -10,35 +10,35 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 
-
-const goals = [15000,10000,5000];
+const goals = [15000, 10000, 5000];
 
 class DailyGoals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      goals : [5000,10000,15000],
-      goal: 'Loading...',
-      visibleModal: false ,
-      visibleModalDG : false,
-      circularFill : 0,
-      Dgoals : 0
+      goals: [5000, 10000, 15000],
+      goal: "Loading...",
+      visibleModal: false,
+      visibleModalDG: false,
+      circularFill: 0,
+      Dgoals: 0
     };
   }
 
-  _onPress = () =>{
-    this.setState({ visibleModalDG: false  })
-    
-  }
+  _onPress = () => {
+    this.setState({ visibleModalDG: false });
+  };
 
   renderItem = ({ item }) => {
     return (
       <TouchableOpacity
-      onPress={ ()=>{
-        this.props.onPressclose(item)}
-      }
+        onPress={() => {
+          this.props.onPressclose(item);
+        }}
       >
-        <Text style={styles.contentTitle}>{item} ก้าว</Text>
+        <View style={styles.content}>
+          <Text style={styles.contentTitle}>{item} Step</Text>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -48,7 +48,6 @@ class DailyGoals extends Component {
       <View style={{ width: 100, height: 100 }}>
         <FlatList data={this.state.goals} renderItem={this.renderItem} />
       </View>
-      
     );
   }
 }
@@ -60,19 +59,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#2c3e50"
-  }
-  ,
+  },
   content: {
-    backgroundColor: "white",
-    padding: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)"
+    width:150,
+    
   },
   contentTitle: {
-    fontSize: 20,
-    marginBottom: 12
+    fontSize: 20
   }
 });
 
