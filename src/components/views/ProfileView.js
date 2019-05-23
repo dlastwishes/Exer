@@ -13,23 +13,23 @@ import UserInfo from "@Widgets/UserInfo";
 import Balance from "@Widgets/Balance";
 import UserMenuItem from "@Widgets/UserMenuItem";
 import { LinearGradient } from "expo";
+import Modal from "react-native-modal";
+import EditProfile from '@Widgets/EditProfile'
 const data = [
   {
-    id: 0,
-    text: "Edit Profile",
-    screen: "editprofile"
+      id: 0,
+      text: 'Edit Profile' ,
   },
   {
-    id: 1,
-    text: "Wallet Menu",
-    screen: "walletmenu"
+      id: 1,
+      text: 'Wallet Menu',
   },
   {
     id: 2,
-    text: "Security Settings",
-    screen: "securitysettings"
-  }
-];
+    text: 'Tutorial',
+},
+
+]
 
 export default class ProfileView extends Component {
   componentDidMount() {}
@@ -42,9 +42,9 @@ export default class ProfileView extends Component {
     super(props);
     this.state = {
       name: "Loading...",
-      email: "Loading...",
-      tel: "Loading...",
-      balance: 100.9
+      address: "Loading...",
+      balance: "Loading...",
+      editVisible : false,
     };
   }
 
@@ -53,9 +53,11 @@ export default class ProfileView extends Component {
       <UserMenuItem
         iconImage={item.iconImage}
         text={item.text}
-        onPress={() =>
-          this.props.navigation.navigate(item.screen)
-        }
+        onPress={() => {
+          if (item.id == 0) this._onPressEdit();
+          else if (item.id == 1) this.props.navigation.navigate("walletmenu");
+          else if (item.id == 2) this.props.navigation.navigate("tutorial");
+        }}
       />
     );
   };
@@ -67,6 +69,14 @@ export default class ProfileView extends Component {
     this.props.navigation.navigate(item.screen);
   };
 
+  _onPressCloseEdit = () => {
+    this.setState({ editVisible: false });
+  };
+
+  _onPressEdit = () => {
+    this.setState({editVisible:true})
+  }
+
   render() {
     return (
       <View>
@@ -74,11 +84,7 @@ export default class ProfileView extends Component {
           <Header title="PROFILE" />
         </LinearGradient>
         <ScrollView>
-          <UserInfo
-            name={this.state.name}
-            email={this.state.email}
-            tel={this.state.tel}
-          />
+          <UserInfo name={this.state.name} address={this.state.address} />
           <View>
             <Text style={styles.spec}> </Text>
           </View>
@@ -87,6 +93,13 @@ export default class ProfileView extends Component {
           <View>
             <Text style={styles.spec}> </Text>
           </View>
+          <Modal isVisible={this.state.editVisible}>
+            <EditProfile
+              onPressCloseEditProfile={() => {
+                this._onPressCloseEdit();
+              }}
+            />
+          </Modal>
           <View>
             <FlatList
               data={data}

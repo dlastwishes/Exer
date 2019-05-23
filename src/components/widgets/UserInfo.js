@@ -17,36 +17,30 @@ class UserInfo extends Component {
           >
             <Image
               style={{ width: 18, height: 18 }}
-              source={require("@Commons/images/name.png")}
+              source={require("@Commons/images/namePf.png")}
             />
             <Text
               style={[
                 {
-                  fontSize: 19,
-                  fontWeight: "bold",
-                  marginLeft:10 
+                  fontSize: 16,
+                  marginLeft: 10
                 }
               ]}
             >
               {this.props.name}
             </Text>
           </View>
-          <View style={{ flexDirection: "row" , paddingBottom: 12, paddingTop: 15}}>
+          <View
+            style={{ flexDirection: "row", paddingBottom: 12, paddingTop: 15 }}
+          >
             <Image
-              style={{ width: 18, height: 18}}
-              source={require("@Commons/images/envelope.png")}
+              style={{ width: 18, height: 18 }}
+              source={require("@Commons/images/address.png")}
             />
             <View style={{ flexDirection: "row" }}>
-              <Text style={[{ fontSize: 16 ,marginLeft:10 }]}>{this.props.email}</Text>
-            </View>
-          </View>
-          <View style={{ flexDirection: "row" , paddingBottom: 12, paddingTop: 15}}>
-            <Image
-              style={{ width: 18, height: 18}}
-              source={require("@Commons/images/smartphone.png")}
-            />
-            <View style={{ flexDirection: "row" }}>
-              <Text style={[{ fontSize: 16,marginLeft:10  }]}>{this.props.tel}</Text>
+              <Text style={[{ fontSize: 16, marginLeft: 10 }]}>
+                {this.props.address}
+              </Text>
             </View>
           </View>
         </View>
@@ -66,7 +60,7 @@ const styles = StyleSheet.create({
   subContainer: {
     flex: 5,
     flexDirection: "column",
-    paddingLeft: 45
+    paddingLeft: 35
   },
   imageContainer: {
     justifyContent: "center",
@@ -75,7 +69,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 50,
-    width: 50,
+    width: 50
   },
   font: {
     paddingBottom: 5

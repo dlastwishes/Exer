@@ -2,9 +2,39 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Font, AppLoading } from "expo";
+import Modal from "react-native-modal";
 
-// create a component
+
 class UserMenuItem extends Component {
+  constructor(props) {
+    super(props);
+    // put your code here
+    this.state = {
+      
+    };
+  }
+
+  static navigationOptions = {
+    tabBarVisible: false
+  };
+
+  _onPress = () => {
+    const value = this.refs.form.getValue();
+  };
+
+  renderModalContent = () => (
+    <View style={styles.container}>
+      <Form ref="edit" type={edit} options={options} />
+      <TouchableHighlight
+        onPress={() => {
+          this._onPress();
+        }}
+      >
+        <Text>Save</Text>
+      </TouchableHighlight>
+    </View>
+  );
+
   render() {
     return (
       <TouchableOpacity onPress={this.props.onPress} activeOpacity={0.5}>
@@ -17,7 +47,7 @@ class UserMenuItem extends Component {
                     </View> */}
           <Text style={styles.text}> {this.props.text} </Text>
         </View>
-        <Text style={styles.spec}></Text>
+        <Text style={styles.spec} />
       </TouchableOpacity>
     );
   }
