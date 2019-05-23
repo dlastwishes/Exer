@@ -41,7 +41,7 @@ import Header from '@Widgets/Header'
       <TouchableOpacity onPress={ () => {this.props.onPressSend(this.state.destination , this.state.amount)}}> 
         <Text style={{fontSize:20 , padding:10 ,
          color:'white', width:150 , height:50, textAlign:'center'
-         , backgroundColor:'#2874A6' , borderRadius:10 , borderWidth:1}}> 
+         , backgroundColor:'#930077' , borderRadius:10 , borderWidth:1}}> 
         Send EXP
         </Text>
       </TouchableOpacity>

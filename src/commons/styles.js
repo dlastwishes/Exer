@@ -6,6 +6,11 @@ const styles = StyleSheet.create({
         flexDirection : 'column'
      
     },
+    containerFirstPage: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
     headerContainer : {
         flexDirection : 'column'
     },
@@ -13,8 +18,7 @@ const styles = StyleSheet.create({
         color: '#FDFEFE',
         fontSize : 35,
         padding : 18,
-        height : 75,
-        backgroundColor: '#2874A6',
+        height : 75
     },
     bottomBar: {
       position: 'absolute',
@@ -40,7 +44,48 @@ const styles = StyleSheet.create({
     cancelButtonText: {
       color: 'rgba(255,255,255,0.8)',
       fontSize: 18,
+    },  
+    
+    // Goal Step
+    containerStep: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#2c3e50"
+    }
+    ,
+    content: {
+      width:150,
     },
+    contentTitle: {
+      fontSize: 20
+    },
+    wrapper: {
+    },
+    slide1: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#9DD6EB',
+    },
+    slide2: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#97CAE5',
+    },
+    slide3: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#92BBD9',
+    },
+    text: {
+      color: '#fff',
+      fontSize: 30,
+      fontWeight: 'bold',
+    }
+
   });
 
 

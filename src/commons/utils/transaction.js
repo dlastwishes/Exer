@@ -1,6 +1,7 @@
 import {web3 , exer , exerAddress} from '@Commons/Connection'
 const Tx = require('ethereumjs-tx');
 import Vault from '@Commons/providers/vault'
+import { Alert , Linking} from "react-native";
 
 _setupDataToTransfer = (destination , value) => {
     const signature = "0xa9059cbb"
@@ -38,7 +39,8 @@ _createTransaction = async (data) => {
     const nonce = await Vault.getNonce(acc.address)
     const privateKey = new Buffer(pvk, 'hex')
     const gasPrice = await Vault.getGasPriceToHex();
-
+    var result = "";
+    var error = false;
     const rawTx = {
         from : acc.address,
         to : exerAddress,
@@ -55,11 +57,21 @@ _createTransaction = async (data) => {
       const serializedTx = tx.serialize();
       console.log('0x'+serializedTx.toString('hex'));
       web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), (err ,res) => {
-          if(!err)
-        console.log('Transaction hash :',res) 
+          if(!err){
+            Alert.alert("Submit Transaction" , res , 
+            [
+              {
+                text : "Etherscan",
+                onPress: () => {
+                  Linking.openURL("https://rinkeby.etherscan.io/tx/"+res).catch((err) => console.error('An error occurred', err));
+                }
+              }
+            ])
+          }
         else
-        console.log(err)
+        Alert.alert("Invalid Transaction")
       })
+      
 }
 
 _countParamLengthToHex = (data) => {

@@ -8,35 +8,49 @@ import {
   Image,
   Button,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
-import Web3 from "web3";
-import connection from "@Commons/Connection";
 import Header from "@Widgets/Header";
+import Transaction from "@Commons/utils/transaction";
 import { Pedometer } from "expo";
 import AnimatedCircularProgress from "@Widgets/AnimatedCircularProgress";
 import Modal from "react-native-modal";
 import DailyGoals from "@Widgets/DailyGoals";
+import Vault from '@Commons/providers/vault'
+import { exer ,web3 } from "@Commons/Connection";
+import PromotionsList from "@Widgets/PromotionsList";
+import MainMenu from "@Widgets/MainMenu";
+import ShowQR from '@Widgets/ShowQR'
+
 export default class MainView extends Component {
+  static navigationOptions = {
+    header: null
+  };
+
+
   constructor(props) {
     super(props);
     this.state = {
       isPedometerAvailable: "checking",
       pastStepCount: 0,
-      currentStepCount: 0,
       visibleModal: false,
       visibleModalDG: false,
-      circularfill: 0
+      circularfill: 0,
+      goalStep: 0,
+      qrcodeVisible : false,
+      address : "",
+      expbalance : 0,
+      ethbalance : 0
     };
   }
 
   renderModalContent = () => (
     <View style={styles.content}>
-      <Text style={styles.contentTitle}>กำหนดเป้าหมาย</Text>
+      <Text style={styles.contentTitle}>Select your goal</Text>
       <DailyGoals
-        onPressclose={Dgoals => {
-          this._onPressclose(Dgoals);
-          console.log("circularFill :" + this.state.circularfill);
+        onPressSelectGoal={Dgoals => {
+          this._onPressSelectGoal(Dgoals);
         }}
       />
       <Button
@@ -48,7 +62,7 @@ export default class MainView extends Component {
 
   renderModalContentSuccess = () => (
     <View style={styles.content}>
-      <Text style={styles.contentTitle}>สำเร็จ</Text>
+      <Text style={styles.contentTitle}>Good luck</Text>
       <Button onPress={() => this._onPress()} title="Close" />
     </View>
   );
@@ -57,30 +71,68 @@ export default class MainView extends Component {
     this.setState({ visibleModalDG: false });
   };
 
-  _onPressclose = Dgoals => {
+  _circularFill = async (goal) => {
+    let stepfill = (this.state.pastStepCount / goal) * 100;
+      this.setState({ circularfill: stepfill });
+    Vault.setDataToVault('goalStep' ,goal )
+  };
+
+
+  _onPressSelectGoal =async (goal) => {
     this.setState({ visibleModal: false });
     this.setState({ visibleModalDG: "default" });
-    // if(this.props.goal[0] === "5000"){
-    console.log(Dgoals);
-    if (Dgoals == 5000) {
-      this.setState({ circularfill: 5000 });
-    } else if (Dgoals == 10000) {
-      this.setState({ circularfill: 10000 });
-    } else if (Dgoals == 15000) {
-      this.setState({ circularfill: 15000 });
+    this.setState({goalStep : goal})
+    this._circularFill(goal);
+  };
+
+  componentWillMount() {
+  this._getGoalStep().then( () => {
+    this._getAddress().then(() =>{
+      this._getBalance()
+    })
+  })
+  }
+
+  _getAddress = async () => {
+    let address = await Vault.getAccount();
+    this.setState({address : address.address})
+}
+
+_getBalance = async () => {
+  exer.methods.balanceOf(this.state.address)
+  .call({ from: this.state.address }, (err, res) => {
+    if (!err) {
+     let result = web3.utils.hexToNumberString(res._hex);
+   
+     this.setState({expbalance : result/100000000})
     }
+  });
+  web3.eth.getBalance( this.state.address , (err ,res) => {
+    if(!err) {
+     
+      this.setState({ethbalance : parseFloat(res/1000000000000000000).toFixed(5) })
+    }
+  })
+}
 
-    
 
-    // }
-  };
-
-  static navigationOptions = {
-    header: null
-  };
+  _getGoalStep = async () => {
+    let goal = await Vault.getGoalStep()
+    if(goal){
+      this._circularFill(goal)
+      this.setState({goalStep : goal.toString()})
+    }
+  }
 
   componentDidMount() {
+    this._getGoalStep().then( () => {
+      this._getAddress().then(() =>{
+        this._getBalance()
+      })
+      
+    })
     this._subscribe();
+   
   }
 
   componentWillUnmount() {
@@ -88,11 +140,6 @@ export default class MainView extends Component {
   }
 
   _subscribe = () => {
-    this._subscription = Pedometer.watchStepCount(result => {
-      this.setState({
-        currentStepCount: result.steps
-      });
-    });
 
     Pedometer.isAvailableAsync().then(
       result => {
@@ -110,7 +157,6 @@ export default class MainView extends Component {
     const end = new Date();
     const start = new Date();
 
-    // start.setDate(end.getDate() - 0.7);
     start.setHours(0, 0, 0, 0);
     Pedometer.getStepCountAsync(start, end).then(
       result => {
@@ -129,42 +175,139 @@ export default class MainView extends Component {
     this._subscription = null;
   };
 
+  _onPressClaim = async () => {
+    Alert.alert(
+      "Confirm Transaction",
+      "Confirm to claim EXP reward",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            Alert.alert('Cancel Transaction')
+          },
+          style: "cancel"
+        },
+        {
+          text: "Confirm",
+          onPress: () => {
+            let name = Vault.getNameProfile();
+            if(name != null){
+              Transaction.claimExp(this.state.pastStepCount , name )
+            }
+            else{
+              Alert.alert('Not found you name profile')
+            }
+          
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  }
+
+  _onPressBuyETH = () => {
+    this.props.navigation.navigate('viewWeb' , {url : 'https://payments.changelly.com/' , 'title' : 'Buy Ethereum'})
+  }
+
+  _onPressMyQR = () => {
+    this.setState({qrcodeVisible:true})
+  }
+
+  _onPressBalance = () => {
+    this._getBalance()
+      Alert.alert(
+        "Account Balances"+'\n',
+        "EXP Balances : "+this.state.expbalance+" EXP"+"\n\n"+"ETH Balances : "+this.state.ethbalance+" ETH",
+        [
+          {
+            text: "OK",
+          }
+        ],
+        { cancelable: false }
+      );
+    
+
+  }
+
+  _onPressCloseQR = () => {
+    this.setState({qrcodeVisible:false})
+  }
+  
   _circularProgress = () => {};
 
   render() {
     return (
       <View>
-        <Header title="EXER" />
-
-        {/* <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text> */}
-        <AnimatedCircularProgress
-          size={360}
-          width={15}
-          fill={48.8}
-          tintColor="#00e0ff"
-          onAnimationComplete={() => console.log("onAnimationComplete")}
-          backgroundColor="#3d5875"
-        >
-          {fill => (
-            <View>
-              <Text style={styles.steps}>{this.state.pastStepCount} Steps</Text>
-              <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                <Text>Goal: {this.state.pastStepCount}</Text>
-                <TouchableHighlight
-                  onPress={() => this.setState({ visibleModal: "default" })}
-                >
+          <Header title="EXER" />
+        <ScrollView>
+          <View style={styles.container}>
+            <AnimatedCircularProgress
+              size={300}
+              width={18}
+              fill={this.state.circularfill}
+              tintColor="#a82ffc"
+              onAnimationComplete={() => console.log("onAnimationComplete")}
+              backgroundColor="#313848"
+            >
+              {fill => (
+                <View style={styles.dayFill}>
                   <Image
-                    style={{ width: 25, height: 25, marginLeft: 5 }}
-                    source={require("@Commons/images/editgoal.png")}
+                    style={{ width: 50, height: 50 }}
+                    source={require("@Commons/images/running.png")}
                   />
-                </TouchableHighlight>
-              </View>
+                  <Text style={styles.steps}>
+                    {this.state.pastStepCount} Steps
+                  </Text>
+                  <View style={{ flexDirection: "row", marginBottom: 10 }}>
+                    <Text style={{ color: "#313848", fontWeight: "bold" }}>
+                      Goal {this.state.goalStep}
+                    </Text>
+                    <TouchableHighlight
+                      onPress={() => this.setState({ visibleModal: "default" })}
+                    >
+                      <Image
+                        style={{ width: 25, height: 25, marginLeft: 5 }}
+                        source={require("@Commons/images/edit.png")}
+                      />
+                    </TouchableHighlight>
+                  </View>
+                  <View />
+                </View>
+              )}
+            </AnimatedCircularProgress>
+          </View>
+          <View>
+            <MainMenu 
+              onPressClaim={ () => {
+                this._onPressClaim()
+              }}
+              onPressBuyETH={ () => {
+                this._onPressBuyETH()
+              }}
+              onPressMyQR = { () => {
+                this._onPressMyQR()
+              }}
+              onPressBalance = { () => {
+                this._onPressBalance()
+              }}
+            />
+          </View>
+          <PromotionsList navigation={this.props.navigation} />
+          <View>
+          <Text>                              </Text>
+          <Text>                              </Text>
+          <Text>                              </Text>
+          <Text>                              </Text>
+          </View>
 
-              <View />
-            </View>
-          )}
-        </AnimatedCircularProgress>
+          
+        </ScrollView>
         <View>
+        <Modal isVisible={this.state.qrcodeVisible}>
+           <ShowQR address={this.state.address} onPressCloseQR={() => {
+             this._onPressCloseQR()
+           }} />
+          </Modal>
           <Modal isVisible={this.state.visibleModal === "default"}>
             {this.renderModalContent()}
           </Modal>
@@ -179,28 +322,37 @@ export default class MainView extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingTop: 10
   },
   steps: {
     backgroundColor: "transparent",
     fontSize: 30,
     textAlign: "center",
-    marginBottom: 10
+    marginBottom: 10,
+    fontWeight: "bold",
+    color: "#313848"
   },
   content: {
     backgroundColor: "white",
-    padding: 22,
-    justifyContent: "center",
+    padding: 15,
     alignItems: "center",
     borderRadius: 4,
     borderColor: "rgba(0, 0, 0, 0.1)"
   },
   contentTitle: {
     fontSize: 20,
-    marginBottom: 12
+  },
+  dayFill: {
+    backgroundColor: "transparent",
+    position: "absolute",
+    top: 10,
+    left: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 250,
+    height: 250
   }
 });
 

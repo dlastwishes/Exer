@@ -1,17 +1,10 @@
 import React, { Component } from "react";
 import {
-  StatusBar,
-  Dimensions,
-  LayoutAnimation,
-  TouchableOpacity,
   Alert,
-  Linking,
-  Icon,
-  StyleSheet,
-  Text,
   View
 } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
+import {web3 } from '@Commons/Connection'
 import styles from "@Commons/styles";
 import Header from "@Widgets/Header";
 
@@ -32,8 +25,6 @@ export default class QRView extends Component {
     this._requestCameraPermission();
   }
 
-
-
   _requestCameraPermission = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({
@@ -43,6 +34,12 @@ export default class QRView extends Component {
 
   _handleBarCodeRead = result => {
     console.log(result.data)
+    if(web3.utils.isAddress(result.data)){
+      
+    }
+    else{
+        Alert.alert('Invalid Address')
+    }
   };
 
   render() {
@@ -64,45 +61,5 @@ export default class QRView extends Component {
       </View>
     );
   }
-
-  _handlePressUrl = () => {
-    Alert.alert(
-      "Open this URL?",
-      this.state.lastScannedUrl,
-      [
-        {
-          text: "Yes",
-          onPress: () => Linking.openURL(this.state.lastScannedUrl)
-        },
-        { text: "No", onPress: () => {} }
-      ],
-      { cancellable: false }
-    );
-  };
-
-  _handlePressCancel = () => {
-    this.setState({ lastScannedUrl: null });
-  };
-
-  _maybeRenderUrl = () => {
-    if (!this.state.lastScannedUrl) {
-      return;
-    }
-    return (
-      <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.url} onPress={this._handlePressUrl}>
-          <Text numberOfLines={1} style={styles.urlText}>
-            {this.state.lastScannedUrl}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={this._handlePressCancel}>
-          <Text style={styles.cancelButtonText}>Cancel</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   
 }

@@ -11,6 +11,10 @@ import TransferView from '@Views/TransferView'
 import QRCodeView from '@Views/ScanQRView'
 import ProfileView from '@Views/ProfileView'
 import HomeView from '@Views/MainView'
+import EditProfile from "@Views/EditProfile";
+import WalletMenu from '@Views/WalletMenu'
+import WebView from '@Views/WebView'
+import Tutorial from '@Views/Tutorial'
 
 // create a component
 
@@ -18,6 +22,9 @@ const MainViewNav = createStackNavigator({
   main: {
     screen: HomeView
   },
+  viewWeb : {
+    screen : WebView
+  }
 });
 
 const TransferNav = createStackNavigator({
@@ -36,6 +43,16 @@ const ScanQRNav = createStackNavigator({
     main: {
       screen: ProfileView
     },
+    editprofile: {
+      screen: EditProfile
+    },
+    walletmenu: {
+      screen: WalletMenu
+    },
+    tutorial: {
+      screen: Tutorial
+    },
+  
   });
 
 const TabNavigator = createBottomTabNavigator(

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Icon, StyleSheet, Text, View, ScrollView ,FlatList,} from "react-native";
-import Web3 from "web3";
-import connection from "@Commons/Connection";
 import Header from "@Widgets/Header";
 import UserInfo from "@Widgets/UserInfo";
 import Balance from "@Widgets/Balance";
@@ -11,23 +9,23 @@ const data = [
   {
       id: 0,
       text: 'Edit Profile' ,
-      screen: 'edit' ,
   },
   {
       id: 1,
       text: 'Wallet Menu',
-      screen: 'edit' ,
   },
   {
-      id: 2,
-      text: 'Security Settings',
-      screen: 'edit' ,
-  },
+    id: 2,
+    text: 'Tutorial',
+},
 
 ]
 
 export default class ProfileView extends Component {
-  componentDidMount() {}
+
+ componentWillMount() {
+
+ }
 
   static navigationOptions = {
     header: null
@@ -48,7 +46,16 @@ export default class ProfileView extends Component {
       <UserMenuItem
         iconImage={item.iconImage}
         text={item.text}
-        onPress={() => this.props.navigation.navigate(item.screen,{ hideTabBar: true })}
+        onPress={() => {
+          if(item.id == 0)
+          this.props.navigation.navigate("editprofile")
+          else if (item.id == 1)
+        this.props.navigation.navigate("walletmenu")
+        else if (item.id == 2)
+        this.props.navigation.navigate("tutorial")
+        }
+       
+        }
         
       />
     );
