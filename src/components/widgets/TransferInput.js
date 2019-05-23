@@ -7,8 +7,6 @@ import {
   View,
   TextInput
 } from "react-native";
-import Web3 from "web3";
-import connection from "@Commons/Connection";
 import Header from "@Widgets/Header";
 import { LinearGradient } from "expo";
 export default class TransferView extends Component {

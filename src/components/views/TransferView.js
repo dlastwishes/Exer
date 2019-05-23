@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Icon, StyleSheet,Alert, Text, View  , TextInput} from 'react-native';
-import Web3 from 'web3'
-import connection from '@Commons/Connection'
 import Header from '@Widgets/Header'
 import TransferInput from '@Widgets/TransferInput'
   export default class TransferView extends Component {

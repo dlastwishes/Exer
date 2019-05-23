@@ -11,8 +11,6 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native";
-import Web3 from "web3";
-import connection from "@Commons/Connection";
 import Header from "@Widgets/Header";
 import { Pedometer } from "expo";
 import AnimatedCircularProgress from "@Widgets/AnimatedCircularProgress";
@@ -198,7 +196,9 @@ export default class MainView extends Component {
           <View>
             <MianMenu/>
           </View>
-          <PromotionsList />
+          <PromotionsList
+            navigation={this.props.navigation}
+           />
           <View>
           <Text>                              </Text>
           <Text>                              </Text>

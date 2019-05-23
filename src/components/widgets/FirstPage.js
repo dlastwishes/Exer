@@ -1,6 +1,7 @@
 //import liraries
 import React, { Component } from "react";
-import { View, Text, StyleSheet,TouchableHighlight } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Button } from "react-native-paper";
 import t from "tcomb-form-native";
 // create a component
 
@@ -12,30 +13,19 @@ const edit = t.struct({
   PrivateKey: t.String
 });
 
-const options = {
-    fields: {
-        PrivateKey: {
-          editable: false
-        }
-      },
-};
+const options = {};
 
-class Editprofile extends Component {
+class FirstPage extends Component {
   constructor(props) {
     super(props);
     // put your code here
     this.state = {
       value: {
         Name: "",
-        PrivateKey: ""
+        PrivateKey: "adsdasdadasd"
       }
     };
   }
-
-  static navigationOptions = {
-    tabBarVisible: false
-  };
-
   _onPress = () => {
     const value = this.refs.form.getValue();
   };
@@ -44,13 +34,20 @@ class Editprofile extends Component {
     return (
       <View style={styles.container}>
         <Form ref="edit" type={edit} options={options} />
-        <TouchableHighlight
+        <TouchableOpacity
           onPress={() => {
             this._onPress();
           }}
         >
           <Text>Save</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate("Maintab");
+          }}
+        >
+          <Text>FirstPage</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -66,4 +63,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Editprofile;
+export default FirstPage;

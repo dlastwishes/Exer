@@ -7,8 +7,7 @@ import {
   ScrollView,
   FlatList
 } from "react-native";
-import Web3 from "web3";
-import connection from "@Commons/Connection";
+
 import Header from "@Widgets/Header";
 import UserInfo from "@Widgets/UserInfo";
 import Balance from "@Widgets/Balance";
@@ -55,7 +54,7 @@ export default class ProfileView extends Component {
         iconImage={item.iconImage}
         text={item.text}
         onPress={() =>
-          this.props.navigation.navigate("promotion")
+          this.props.navigation.navigate(item.screen)
         }
       />
     );

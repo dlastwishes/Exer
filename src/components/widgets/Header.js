@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Icon, StyleSheet, Text, View } from 'react-native';
-import Web3 from 'web3'
-import connection from '@Commons/Connection'
 import styles from '@Commons/styles'
 
   export default class Header extends Component {
