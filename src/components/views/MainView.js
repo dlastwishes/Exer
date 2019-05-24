@@ -132,6 +132,9 @@ _getBalance = async () => {
       
     })
     this._subscribe();
+    this.focusListener = this.props.navigation.addListener("didFocus", () => {
+      this._subscribe();
+    });
    
   }
 
@@ -176,33 +179,39 @@ _getBalance = async () => {
   };
 
   _onPressClaim = async () => {
-    Alert.alert(
-      "Confirm Transaction",
-      "Confirm to claim EXP reward",
-      [
-        {
-          text: "Cancel",
-          onPress: () => {
-            Alert.alert('Cancel Transaction')
+    if(parseInt(this.state.pastStepCount) >= parseInt(this.state.goalStep)){
+      Alert.alert(
+        "Confirm Transaction",
+        "Confirm to claim EXP reward",
+        [
+          {
+            text: "Cancel",
+            onPress: () => {
+              Alert.alert('Cancel Transaction')
+            },
+            style: "cancel"
           },
-          style: "cancel"
-        },
-        {
-          text: "Confirm",
-          onPress: async () => {
-            var name = await Vault.getNameProfile();
-            if(name != null){
-              Transaction.claimExp(this.state.pastStepCount , name )
+          {
+            text: "Confirm",
+            onPress: async () => {
+              var name = await Vault.getNameProfile();
+              if(name != null){
+                Transaction.claimExp(this.state.pastStepCount , name )
+              }
+              else{
+                Alert.alert('Not found you name profile')
+              }
+            
             }
-            else{
-              Alert.alert('Not found you name profile')
-            }
-          
           }
-        }
-      ],
-      { cancelable: false }
-    );
+        ],
+        { cancelable: false }
+      );
+    }
+    else{
+      Alert.alert('Your goal not finish')
+    }
+ 
   }
 
   _onPressBuyETH = () => {

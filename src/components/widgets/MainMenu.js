@@ -16,7 +16,7 @@ class MainMenu extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={this.props.onPressClaim}>
+        <TouchableOpacity style={styles.button}  onPress={this.props.onPressClaim}>
           <View
             style={{
               flexDirection: "row",
