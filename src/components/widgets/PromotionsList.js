@@ -12,29 +12,38 @@ import { View, Text, StyleSheet, Image ,FlatList ,ScrollView,TouchableOpacity,na
     this.state = {
         flatListData : [
             {
-              Promotion: 1,
+              promotion: 1,
               images: require("@Commons/images/promotion1.png")
             },
             {
-              Promotion: 2,
-              images: require("@Commons/images/promotion1.png")
+              promotion: 2,
+              images: require("@Commons/images/promotion2.png")
             },
             {
-              Promotion: 3,
-              images: require("@Commons/images/promotion1.png")
+              promotion: 3,
+              images: require("@Commons/images/promotion3.png")
             }
           ]
         
     };
   }
 
-  _onPress = ()=>{
-    this.props.navigation.navigate("promotion");
-  }
 
   _renderItem = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => this.props.navigation.navigate("promotion")}>
+      <TouchableOpacity onPress={() => 
+      {
+        if(item.promotion == 1){
+          this.props.navigation.navigate('viewWeb' , {url : 'https://www.truemoney.com/retail-arabitia/?utm_source=inapp'})
+        }
+        else if(item.promotion == 2){
+          this.props.navigation.navigate('viewWeb' , {url : 'https://www.truemoney.com/retail-jungle/?utm_source=inapp'})
+        }
+        else if(item.promotion == 3){
+          this.props.navigation.navigate('viewWeb' , {url : 'https://www.truemoney.com/retail-arabitia/?utm_source=inapp'})
+        }
+        }
+        }>
         <Image style={styles.picture} source={item.images} />
         </TouchableOpacity>
     );
@@ -74,13 +83,15 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   label: {
-    fontSize: 17,
+    fontSize: 11,
     padding: 5
   },
   picture: {
     height: 150,
     width: 265,
-    resizeMode: "stretch"
+    resizeMode: "stretch",
+    borderRadius: 3,
+    margin: 2,
   }
 });
 

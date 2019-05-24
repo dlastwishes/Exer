@@ -51,15 +51,22 @@ getNameProfile = async () => {
   }
 };
 
-getGasPriceToHex = async () => {
-  try {
-    const item = await AsyncStorage.getItem("gasPrice");
-    const gasPrice = web3.utils.numberToHex(web3.utils.toWei(item, "gwei"));
-    return gasPrice;
-  } catch (error) {
-    console.log(error.message);
-  }
-};
+logout = async () => {
+    try{
+       key = ["pvk" , "nameProfile" , "goalStep"]
+        await AsyncStorage.multiRemove(key)
+    }catch(err){
+        console.log(err.message);
+    }
+}
+
+editNameProfile = async (newName) => {
+    try {
+        await AsyncStorage.setItem("nameProfile", newName.toLowerCase());
+      } catch (error) {
+        console.log(error.message);
+      }
+}
 
 setDataToVault = async (key, data) => {
   try {
@@ -73,8 +80,10 @@ export default {
   setPrivateKey,
   getPrivateKey,
   getAccount,
+  getNameProfile,
   getGoalStep,
-  getGasPriceToHex,
   setDataToVault,
-  getNonce
+  editNameProfile,
+  getNonce,
+  logout
 };

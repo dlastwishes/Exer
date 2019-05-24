@@ -44,7 +44,7 @@ export default class TransferView extends Component {
       ],
       { cancelable: false }
     );
-  };
+  }
 
   render() {
     return (

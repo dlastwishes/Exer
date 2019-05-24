@@ -11,13 +11,10 @@ _setupDataToTransfer = (destination , value) => {
     return result
 }
 
-_setupDataToClaimExp = (step , name) => {
-    const signature = "0x8f3a8fed"
+_setupDataToClaimExp = (step) => {
+    const signature = "0xc533a42d"
     var part_a = this._padLeftNum(step)
-    var part_b = "0000000000000000000000000000000000000000000000000000000000000040"
-    var part_c = this._countParamLengthToHex(name)
-    var part_d = this._padRightString(name)
-    var result = signature+part_a + part_b + part_c + part_d
+    var result = signature+part_a
     return result
 }
 
@@ -29,6 +26,7 @@ transferExp = async (destination , value) => {
 
 claimExp = async (step , name) => {
    const data = _setupDataToClaimExp(step , name)
+   console.log(data)
     this._createTransaction(data)
 }  
 
@@ -38,14 +36,13 @@ _createTransaction = async (data) => {
     const acc = await Vault.getAccount();
     const nonce = await Vault.getNonce(acc.address)
     const privateKey = new Buffer(pvk, 'hex')
-    const gasPrice = await Vault.getGasPriceToHex();
     var result = "";
     var error = false;
     const rawTx = {
         from : acc.address,
         to : exerAddress,
         data : data.toString(),
-        gasPrice: gasPrice,
+        gasPrice: web3.utils.numberToHex(web3.utils.toWei('30', "gwei")),
         gasLimit: web3.utils.numberToHex(300000),
         gas : web3.utils.numberToHex(300000),
         nonce : web3.utils.numberToHex(nonce) ,

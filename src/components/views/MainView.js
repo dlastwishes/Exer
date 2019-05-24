@@ -189,8 +189,8 @@ _getBalance = async () => {
         },
         {
           text: "Confirm",
-          onPress: () => {
-            let name = Vault.getNameProfile();
+          onPress: async () => {
+            var name = await Vault.getNameProfile();
             if(name != null){
               Transaction.claimExp(this.state.pastStepCount , name )
             }
@@ -206,7 +206,7 @@ _getBalance = async () => {
   }
 
   _onPressBuyETH = () => {
-    this.props.navigation.navigate('viewWeb' , {url : 'https://payments.changelly.com/' , 'title' : 'Buy Ethereum'})
+    this.props.navigation.navigate('viewWeb' , {url : 'https://payments.changelly.com/' })
   }
 
   _onPressMyQR = () => {

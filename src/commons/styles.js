@@ -4,12 +4,22 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flexDirection : 'column'
-     
+    },
+    containerLanding : {
+        flex: 1,
+        justifyContent: 'center'
     },
     containerFirstPage: {
       flex: 1,
       justifyContent: "center",
+      margin: 10
+    },
+    button: {
       alignItems: "center",
+      backgroundColor: "#930077",
+      padding: 10,
+      margin: 10,
+      borderRadius: 5
     },
     headerContainer : {
         flexDirection : 'column'
