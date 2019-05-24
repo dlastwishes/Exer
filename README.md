@@ -61,5 +61,3 @@ expo start
 * [x] Create and submit transaction to change state on smart contract
 * [x] Get data from smart contract on Ethereum network
 
-* 
-
