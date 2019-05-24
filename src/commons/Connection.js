@@ -1,6 +1,6 @@
 const Web3 = require('web3');
 
-const web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/9124b40eb90c465f81ea487fd6f0a6a8'));
+const web3 = new Web3(new Web3.providers.HttpProvider("your_infura_key_gateway"));
 
 const exerAddress = "0x4beb8fc6d6f7feff3d136bb735c9195740de7396"
 
