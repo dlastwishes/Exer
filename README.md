@@ -36,11 +36,9 @@ Setup, shim.js to run non-React-Native dependencies
 ```
 ./node_modules/.bin/rn-nodeify --hack --install
 ```
-config your firebase api key in  `/configdb/connect.js` 
 
 setup, module Scan QR code moudule 
 * See intruction for setup [react-native-qrcode-scanner ](https://github.com/moaazsidat/react-native-qrcode-scanner)
-* See Instruction for setup [react-native-camera](https://github.com/react-native-community/react-native-camera) 
 
 ## Build Project
 
