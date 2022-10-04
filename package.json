@@ -11,7 +11,7 @@
     "browserify-zlib": "^0.1.4",
     "dns.js": "^1.0.1",
     "events": "^1.1.1",
-    "expo": "^32.0.0",
+    "expo": "^46.0.14",
     "https-browserify": "0.0.1",
     "node-libs-browser": "^2.2.0",
     "process": "^0.11.10",
